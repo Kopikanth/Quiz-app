@@ -48,6 +48,7 @@ function startQuiz(){
     currentQuestionIndex = 0;
     score = 0;
     nextButton.innerHTML = "Next";
+
     showQuestion();
 }
 
@@ -67,6 +68,7 @@ function showQuestion(){
         }
         button.addEventListener("click", selectAnswer)
     })
+
 }
 
 function resetState(){
@@ -81,6 +83,7 @@ function selectAnswer(e){
     const isCorrect = selectedBtn.dataset.correct === "true";
     if(isCorrect){
         selectedBtn.classList.add("correct");
+        score++;
     }
     else{
         selectedBtn.classList.add("incorrect");
@@ -92,6 +95,34 @@ function selectAnswer(e){
         button.disabled = true;
     });
     nextButton.style.display = "block";
+}
+
+nextButton.addEventListener("click", ()=>{
+    if(currentQuestionIndex < questions.length){
+        handlenNextButton();
+    }
+    else{
+        startQuiz();
+    }
+})
+
+function handlenNextButton(){
+    currentQuestionIndex++;
+    if(currentQuestionIndex < questions.length){
+        showQuestion();
+    }
+    else{
+        showScore();
+    }
+}
+
+function showScore(){
+    questionElement.innerHTML = "You scored " + score + " out of 4!";
+    // answerButtons.innerHTML = "";
+    while(answerButtons.firstChild){
+        answerButtons.removeChild(answerButtons.firstChild);
+    }
+    nextButton.innerHTML = "Play Again"; 
 }
 
 startQuiz();
